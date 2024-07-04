@@ -1,0 +1,8 @@
+Test Coverage	Test Clarity	Test Design	Clarity of code	Modularity	Gitlab board	Communications	Check in attendance	Standups/meetings/minutes									
+Perfect	Tests seem extensive.	Perfect	"Great style for the most part, very impressed by the consistency! Won't take marks away for using snake case (just for iter1), because the style is very readable, compact, concise and easy to read. Nice job!"	Average	"Some tests are whitebox. Some describes are unnecessary (not going to take marks for this this iter, but one describe for the function, and one for success/error is good enough imo!"	Good	"Style resembes C too much, try to use JS notation more, e.g. data.users instead of data[users]. Using let instead of const. Camel case for all variable names, helper functions should be lowercase camel case, reserve capitalised nmes for interfaces. Error checking should be done first too."	Perfect	Great helper functions!	Terrible	Not used.	Perfect		Perfect		Perfect	
+####	Commits	Merge Requests	Tests before implementation														
+Ivan Wong	Perfect		Perfect		Perfect												
+Alexandre Cheminat	Perfect		Perfect		Perfect												
+Oliver Todd	Perfect		Perfect		Perfect												
+Belgutei Javkhlan	Perfect		Perfect		Perfect												
+																	
