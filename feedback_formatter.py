@@ -1,64 +1,42 @@
-'''
-Description: formats spreadsheet feedback (both group and individual)
-Instructions:
- - copy paste feedback into input.csv
- - run: python3 formatter.py
- - copy text from results.txt
-'''
 import csv
 import copy
+
 INPUT_FILE = "input.csv"
 START_AND_END_MSG = "iter1_message.md"
 OUTPUT_FILE = 'results.md'
 HASH_STR = '####'
-
+ENABLE_COLOUR_GRADES = True
 '''
-Data Structures Used
---------------------
-results = {
-    category1: {
-        mark: Perfect,
-        comments: Not bad!
-    },
-}
---------------------
-individual_results = { name1: results_object, }
-'''
-results = {}
-individual_results = {}
+Data Structure used:
 feedback = {
-    'group': {},
-    'individual': {}
+    group: Feedback,
+    individual: {
+        name1: Feedback,
+    }
 }
+'''
+# Global variable
+feedback = { 'group': {}, 'individual': {} }
 
-class Feedback:
-    '''
+'''
     self.feedback = {
         category1: {
             mark: Perfect,
             comments: Not bad!
         },
     }
-    '''
+'''
+class Feedback:
     def __init__(self) -> None:
         self.feedback = {}
     def is_empty(self):
         return True if self.feedback == {} else False
-    '''
-    Description: populates itself with the categories
-    '''
     def add_categories(self, categories) -> None:
         for category in categories:
             if category not in ['', HASH_STR]:
                 self.feedback[category] = { 'mark': '', 'comments': ''}
-    '''
-    Description: returns list of categories
-    '''
     def get_categories(self):
         return [category for category in self.feedback.keys()]
-    '''
-    Description: populates itself with the comments and mark for each category
-    '''
     def add_marks_comments(self, row):
         categories = self.get_categories()
         max_index = len(categories) * 2 - 1
@@ -74,6 +52,10 @@ class Feedback:
                 curr_category = categories[category_index]
             if i == max_index:
                 break
+    def get_mark(self, category):
+        return self.feedback[category]['mark']
+    def get_comments(self, category):
+        return self.feedback[category]['comments']
     def print(self, raw = False) -> None:
         if raw:
             print(self.feedback)
@@ -82,63 +64,6 @@ class Feedback:
                 print(f"  {category}:\n"
                     f"    • Mark: {self.feedback[category]['mark']}\n"
                     f"    • Comments: {self.feedback[category]['comments']}")
-
-'''
-Description: populates results with the categories
-'''
-def populate_categories(categories):
-    for category in categories:
-        if category != '':
-            results[category] = { 'mark': '', 'comments': ''}
-
-'''
-Description: populates results with the comments and mark for each category
-'''
-def populate_marks_comments(row):
-    keys = [key for key in results.keys()]
-    max_index = len(keys) * 2 - 1
-    curr_category = keys[0]
-    curr_section = 'mark'
-    category_counter = 0
-    for i, item in enumerate(row):
-        curr_section = 'mark' if i % 2 == 0 else 'comments'
-        results[curr_category][curr_section] = item
-        # If index is odd, change categories
-        if i % 2 != 0 and i < max_index:
-            category_counter += 1
-            curr_category = keys[category_counter]
-        if i == max_index:
-            break
-
-'''
-Description: populates results with the categories
-'''
-def populate_categories_individual(categories):
-    res = {}
-    for category in categories:
-        if category not in ['', HASH_STR]:
-            res[category] = { 'mark': '', 'comments': ''}
-    return res
-
-'''
-Description: populates results with the comments and mark for each category
-'''
-def populate_marks_comments_individual(row, results_template):
-    keys = [key for key in results_template.keys()]
-    max_index = len(keys) * 2 - 1
-    curr_category = keys[0]
-    curr_section = 'mark'
-    category_counter = 0
-    for i, item in enumerate(row):
-        curr_section = 'mark' if i % 2 == 0 else 'comments'
-        results_template[curr_category][curr_section] = item
-        # If index is odd, change categories
-        if i % 2 != 0 and i < max_index:
-            category_counter += 1
-            curr_category = keys[category_counter]
-        if i == max_index:
-            break
-    return results_template
 
 '''
 Description: parses CSV input into data structures (results and individual_results)
@@ -154,29 +79,26 @@ Description: parses CSV input into data structures (results and individual_resul
 '''
 def parse_csv():
     global feedback
-    counter = 0
     with open(INPUT_FILE, 'r') as csvfile:
         csv_reader = csv.reader(csvfile, delimiter=',')
-        # GROUP: First two rows
+        # GROUP FEEDBACK: First two rows
         Group_feedback = Feedback()
         for row in csv_reader:
-            counter += 1 if counter < 2 else None
             if (Group_feedback.is_empty()):
-                # populate_categories(row)
                 Group_feedback.add_categories(row)
             else:
-                # populate_marks_comments(row)
                 Group_feedback.add_marks_comments(row)
-            if (counter >= 2):
                 break
+        feedback['group'] = Group_feedback
 
-        # INDIVIDUAL: Continues looping from 3rd row onwards
+        # INDIVIDUAL FEEDBACK: Continues looping from 3rd row onwards
         list_of_names = []
         list_of_feedback = []
         individual_feedback = Feedback()
+        counter = 0
         for row in csv_reader:
             if (row[0] == HASH_STR):
-                individual_feedback = Feedback() # create new feedback each row
+                individual_feedback = Feedback()
                 individual_feedback.add_categories(row)
             elif(row[0] != ''):
                 list_of_names.append(row[0])
@@ -206,32 +128,64 @@ def get_start_end_messages():
     return [start_message, end_message]
 
 '''
+Description: adds colour to the grade on markdown
+'''
+def colour_grade(grade):
+    if (not ENABLE_COLOUR_GRADES):
+        return grade
+    if (grade in ['Terrible', 'Below Average']):
+        return f"<span style='color:red;'>{grade}</span>"
+    elif (grade in ['Average', 'Good']):
+        return f"<span style='color:orange;'>{grade}</span>"
+    elif (grade == 'Really great'):
+        return f"<span style='color:yellowgreen;'>{grade}</span>"
+    elif (grade == 'Perfect'):
+        return f"<span style='color:teal;'>{grade}</span>"
+    return grade
+
+'''
+Description: turns feedback into a formatted string
+'''
+def format_feedback_into_string(Feedback, group_feedback = False, show_header = False):
+    result = ''
+    if group_feedback:
+        if (show_header):
+            result += '| Mark | Category | Comments |\n'
+        else:
+            result += '|  |  |  |\n'
+        result += '| ---- | ---- | ---- |\n'
+    for category in Feedback.get_categories():
+        mark = colour_grade(Feedback.get_mark(category))
+        comments = "Nothing to comment on!" if Feedback.get_comments(category) == '' else Feedback.get_comments(category)
+        if group_feedback:
+            result += f"| {mark} | {category} | {comments} |\n"
+        else:
+            result += f"  • {mark} {category}: {comments} \\\n"
+    return result
+
+'''
 Description: formats the final output
 '''
 def export_results(start_message, end_message):
+    global feedback
     with open(OUTPUT_FILE, 'w') as textfile:
         # Start message
         textfile.write(f"{start_message}")
         # Group feedback
-        group_result = ''
-        for category in results:
-            comments = "Nothing to comment on!" if results[category]['comments'] == '' else results[category]['comments']
-            group_result += f"  • [{results[category]['mark']}] {category}: {comments} \\\n"
-        textfile.write(group_result[:-2])
-
+        group_result = format_feedback_into_string(feedback['group'], group_feedback=True, show_header=True)
+        textfile.write(group_result)
         # Individual feedback
+        textfile.write('\n___\n**Additional individual comments** \\\n')
         individual_result = ''
-        textfile.write('\n\n**Additional individual comments** \\\n')
-        for name in individual_results:
-            individual_result += f"{name}: \\\n"
-            for cat in individual_results[name]:
-                comments = "Nothing to comment on!" if individual_results[name][cat]['comments'] == '' else individual_results[name][cat]['comments']
-                individual_result += f"  • [{individual_results[name][cat]['mark']}] {cat}: {comments} \\\n"
+        for name in feedback['individual']:
+            individual_result += f"{name}:\\\n"
+            individual_result += format_feedback_into_string(feedback['individual'][name])
         textfile.write(individual_result[:-2])
         # End message
-        textfile.write(f"\n\n{end_message}")
+        textfile.write(f"\n___\n {end_message}")
 
 if __name__ == "__main__":
     parse_csv()
-    # [start_message, end_message] = get_start_end_messages()
-    # export_results(start_message, end_message)
+    [start_message, end_message] = get_start_end_messages()
+    export_results(start_message, end_message)
+    print("\n    Open 'results.md' to view the output!")

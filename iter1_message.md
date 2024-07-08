@@ -9,6 +9,6 @@ END_MESSAGE \
 **Additional notes:** \
   • Please read any comments left in the feedback merge request. It should be called “Project Feedback: Iteration 1”. If you click on the “changes” tab and scroll through the unresolved threads, you can view my comments. If I notice a line of code with bad style, I only comment on the first instance of it, so make sure you apply the feedback everywhere. \
   • Final marks: the course will release these. If you find your marks differ slightly from your team mates, it’s completely normal! It’s due to the way peer review data is collected by the course. \
-  • However, if your marks are significantly less than your team mates, I will message you individually on MS teams with reasons why.
+  • If your marks are significantly less than your team mates, I will message you individually on MS teams with reasons why.
 
 Goodluck with iter2, see you all in two weeks!
