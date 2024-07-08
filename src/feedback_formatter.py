@@ -1,10 +1,11 @@
 import csv
 import copy
+import pandas as pd
 
-INPUT_FILE = "input.csv"
-START_AND_END_MSG = "iter1_message.md"
-OUTPUT_FILE = 'results.md'
-HASH_STR = '####'
+INPUT_FILE = "input/input.xls"
+INPUT_FILE_CSV = "input/csv/input.csv"
+INPUT_FILE_APPEND_MSG = "input/iter1_message.md"
+OUTPUT_FILE = 'output/results.md'
 ENABLE_COLOUR_GRADES = True
 '''
 Data Structure used:
@@ -18,26 +19,27 @@ feedback = {
 # Global variable
 feedback = { 'group': {}, 'individual': {} }
 
-'''
-    self.feedback = {
-        category1: {
-            mark: Perfect,
-            comments: Not bad!
-        },
-    }
-'''
 class Feedback:
+    '''
+        feedback = {
+            category1: {
+                mark: Perfect,
+                comments: Not bad!
+            },
+        }
+    '''
     def __init__(self) -> None:
         self.feedback = {}
-    def is_empty(self):
+    def is_empty(self) -> bool:
         return True if self.feedback == {} else False
     def add_categories(self, categories) -> None:
         for category in categories:
-            if category not in ['', HASH_STR]:
+            if category != '' and 'Unnamed' not in category:
                 self.feedback[category] = { 'mark': '', 'comments': ''}
-    def get_categories(self):
+    def get_categories(self) -> list:
         return [category for category in self.feedback.keys()]
-    def add_marks_comments(self, row):
+    def add_marks_comments(self, row) -> None:
+        print(len(row))
         categories = self.get_categories()
         max_index = len(categories) * 2 - 1
         category_index = 0
@@ -52,9 +54,9 @@ class Feedback:
                 curr_category = categories[category_index]
             if i == max_index:
                 break
-    def get_mark(self, category):
+    def get_mark(self, category) -> str:
         return self.feedback[category]['mark']
-    def get_comments(self, category):
+    def get_comments(self, category) -> str:
         return self.feedback[category]['comments']
     def print(self, raw = False) -> None:
         if raw:
@@ -77,33 +79,32 @@ Description: parses CSV input into data structures (results and individual_resul
     Name | Mark | Description | Mark | Description | Mark | Description
     Name | Mark | Description | Mark | Description | Mark | Description
 '''
-def parse_csv():
+def parse_csv() -> None:
     global feedback
-    with open(INPUT_FILE, 'r') as csvfile:
+    with open(INPUT_FILE_CSV, 'r') as csvfile:
         csv_reader = csv.reader(csvfile, delimiter=',')
         # GROUP FEEDBACK: First two rows
         Group_feedback = Feedback()
         for row in csv_reader:
             if (Group_feedback.is_empty()):
-                Group_feedback.add_categories(row)
+                Group_feedback.add_categories(row[1:])
             else:
-                Group_feedback.add_marks_comments(row)
+                Group_feedback.add_marks_comments(row[1:])
                 break
         feedback['group'] = Group_feedback
 
         # INDIVIDUAL FEEDBACK: Continues looping from 3rd row onwards
         list_of_names = []
         list_of_feedback = []
-        individual_feedback = Feedback()
-        counter = 0
+        Individual_feedback = Feedback()
         for row in csv_reader:
-            if (row[0] == HASH_STR):
-                individual_feedback = Feedback()
-                individual_feedback.add_categories(row)
+            if (Individual_feedback.is_empty()):
+                Individual_feedback = Feedback()
+                Individual_feedback.add_categories(row[1:])
             elif(row[0] != ''):
                 list_of_names.append(row[0])
-                individual_feedback.add_marks_comments(row[1:])
-                list_of_feedback.append(copy.deepcopy(individual_feedback))
+                Individual_feedback.add_marks_comments(row[1:])
+                list_of_feedback.append(copy.deepcopy(Individual_feedback))
         for i, name in enumerate(list_of_names):
             feedback['individual'][name] = list_of_feedback[i]
 
@@ -111,8 +112,8 @@ def parse_csv():
 Description: grabs the start_msg to add to the beginning of the output, then
     grab the end_msg to add to the end of the output. 
 '''
-def get_start_end_messages():
-    with open(START_AND_END_MSG, 'r') as textfile:
+def get_start_end_messages() -> list:
+    with open(INPUT_FILE_APPEND_MSG, 'r') as textfile:
         start_message = ''
         end_message = ''
         flag = 'START'
@@ -144,7 +145,8 @@ def colour_grade(grade):
     return grade
 
 '''
-Description: turns feedback into a formatted string
+Description: turns feedback into a formatted string.
+    Group feedback uses markdown table, Individual feedback uses dot points
 '''
 def format_feedback_into_string(Feedback, group_feedback = False, show_header = False):
     result = ''
@@ -160,7 +162,7 @@ def format_feedback_into_string(Feedback, group_feedback = False, show_header = 
         if group_feedback:
             result += f"| {mark} | {category} | {comments} |\n"
         else:
-            result += f"  • {mark} {category}: {comments} \\\n"
+            result += f"  - {mark} {category}: {comments} \n"
     return result
 
 '''
@@ -175,17 +177,22 @@ def export_results(start_message, end_message):
         group_result = format_feedback_into_string(feedback['group'], group_feedback=True, show_header=True)
         textfile.write(group_result)
         # Individual feedback
-        textfile.write('\n___\n**Additional individual comments** \\\n')
+        textfile.write('\n\\\n**Additional individual comments**\n')
         individual_result = ''
         for name in feedback['individual']:
-            individual_result += f"{name}:\\\n"
+            individual_result += f"- {name}:\n"
             individual_result += format_feedback_into_string(feedback['individual'][name])
         textfile.write(individual_result[:-2])
         # End message
         textfile.write(f"\n___\n {end_message}")
 
 if __name__ == "__main__":
+    # TODO: second argument to be the iteration, python3 feedback_formatter.py iter1
+    # TODO: throw error if incorrect number of args passed to input.csv
+    # TODO: config.yaml and classes.py
+    dataframe = pd.read_excel(INPUT_FILE)
+    dataframe.to_csv(INPUT_FILE_CSV, index=None, header=True) 
     parse_csv()
     [start_message, end_message] = get_start_end_messages()
     export_results(start_message, end_message)
-    print("\n    Open 'results.md' to view the output!")
+    print(f"\n    Open '{OUTPUT_FILE}' to view the output!")
