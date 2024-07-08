@@ -143,7 +143,6 @@ def export_results(start_message, end_message, iteration_num):
         textfile.write(group_result)
         # Individual feedback
         if iteration_num != 0:
-            print('hello')
             textfile.write('\n\\\n**Additional individual comments**\n')
         individual_result = ''
         for name in feedback['individual']:
