@@ -1,30 +1,20 @@
-TODO:
-- instructions, with pictures / video recording
-- remove the need for ####, remove counter use a flag instead
-- rearrange order of start and end message? <<< nah
-- use "___" as a break
+## Purpose
+To make COMP1531 marking faster, this script turns the marking spreadsheet feedback into a nice format that can be copy pasted to groups on MS Teams.
 
+## Setup
+- *Optional*: setup a virtual environment first:
+  - `python3 -m venv env`
+  - `source env/bin/activate`
+- `pip install -r requirements.txt`
 
-Instructions:
-- Row 1: copy paste headers for group feedback
+## Instructions
+TODO: include video
 
-
-Group Feedback Instructions:
-- Copy paste row (from TestCoverage to WhitespaceIndentation) into `group-input.txt`
-- Copy paste row (individual tab: from IssueBoard to Meetings) into the line below in `group-input.txt`
-- Copy start and end message into `announcements.txt` in the form of `START_MESSAGE: ....\n END_MESSAGE: ....`
-- Run `python3 group-formatter.py`
-- `group-input.txt` will have your changes
-
-Individual Feedback Instructions:
-- Copy paste column names (e.g. Zhanxin Ye, Jyne Nakamura, Eric Liu, Tiffany Lin, Caroline Liu) into `individual-input-names.txt`
-- Copy paste columns and rows result (top left corner for commits, bottom right corner for testBeforeImplementation) into `individual-input-results.txt`
-- Copy start and end message into `announcements.txt` in the form of `START_MESSAGE: ....\n END_MESSAGE: ....`
-- Run `python3 individual-formatter.py`
-- `individual-input-results.txt` will have your changes
-
-Description: formats spreadsheet feedback (both group and individual)
-Instructions:
- - copy paste feedback into INPUT_FILE
- - copy paste start and end messages into START_AND_END_MSG
- - run: python3 formatter.py
+- Open `input/input.xls` and do the following:
+  - Row 1: copy paste group categories
+  - Row 2: copy paste group feedback
+  - Row 3: copy paste individual categories
+  - Row 4 and below: copy paste student names and individual feedback
+- Run the script: `python3 src/feedback_formatter.py ITERATION_NUM`
+  - Copy paste the output from `output/results.md`
+- If you wish to disable colouring grades or change which grades are coloured, modify the `ENABLE_COLOUR_GRADES` and `GRADE_RANGE` values in `src/feedback_formatter.py`
