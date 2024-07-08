@@ -1,7 +1,7 @@
 ## Purpose
 To make COMP1531 marking faster, this script turns the marking spreadsheet feedback into a nice format that can be copy pasted to groups on MS Teams.
 
-[![Watch the video](https://raw.githubusercontent.com/Dasyure/feedback-formatting/blob/master/assets/feedback_formatting_thumbnail.png)](https://raw.githubusercontent.com/Dasyure/feedback-formatting/blob/master/assets/feedback_formatting_demo_no_audio.mov)
+[![Watch the video](https://raw.githubusercontent.com/Dasyure/feedback-formatting/master/assets/feedback_formatting_thumbnail.png)](https://raw.githubusercontent.com/Dasyure/feedback-formatting/master/assets/feedback_formatting_demo_no_audio.mov)
 
 ## Setup
 - *Optional*: setup a virtual environment first:
