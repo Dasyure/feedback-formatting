@@ -1,3 +1,5 @@
+from get_config import INPUT_FILE
+
 class Feedback:
     '''
         feedback = {
@@ -7,9 +9,8 @@ class Feedback:
             },
         }
     '''
-    def __init__(self, input_file) -> None:
+    def __init__(self) -> None:
         self.feedback = {}
-        self.input_file = input_file
     def is_empty(self) -> bool:
         return True if self.feedback == {} else False
     def add_categories(self, categories) -> None:
@@ -38,7 +39,7 @@ class Feedback:
             correct_num = num_categories if num_categories > num_marks else num_marks
             print(f"\n    Warning: You forgot to copy paste some {missing_item} into the {section} section!"
                   f"\n    There's {correct_num} {correct_item} but only"
-                  f" {missing_num} {missing_item}. Some fields may be missing. Open '{self.input_file}' and try again. ")
+                  f" {missing_num} {missing_item}. Some fields may be missing. Open '{INPUT_FILE}' and try again. ")
         category_index = 0
         curr_category = categories[0]
         curr_section = 'mark'

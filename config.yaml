@@ -1,0 +1,29 @@
+# No need to change these, unless you want to change filenames.
+INPUT_FILE: "input/input.xlsx"
+INPUT_FILE_CSV: "input/csv/input.csv"
+OUTPUT_FILE: "output/results.md"
+
+# If no comment is left for a mark, replaces it with DEFAULT_COMMENT
+DEFAULT_COMMENT: "Nothing to comment on!"
+# Disable if you don't want coloured grades
+ENABLE_COLOUR_GRADES: True
+# MS teams only registers a select number of colours, these were found by trial and error
+GRADE_COLOUR_RANGE:
+  "tier1":
+    "colour": "teal"
+    "grades":
+      - "Perfect"
+  "tier2":
+    "colour": "yellowgreen"
+    "grades":
+      - "Really great"
+  "tier3":
+    "colour": "orange"
+    "grades":
+      - "Average"
+      - "Good"
+  "tier4":
+    "colour": "red"
+    "grades":
+      - "Terrible"
+      - "Below Average"

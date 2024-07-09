@@ -3,18 +3,8 @@ import csv
 import copy
 import sys
 from classes import Feedback
+from get_config import INPUT_FILE, INPUT_FILE_CSV, OUTPUT_FILE, DEFAULT_COMMENT, ENABLE_COLOUR_GRADES, GRADE_COLOUR_RANGE
 
-INPUT_FILE = "input/input.xlsx"
-INPUT_FILE_CSV = "input/csv/input.csv"
-OUTPUT_FILE = 'output/results.md'
-ENABLE_COLOUR_GRADES = True
-# Used for colouring grades (can only have 4 colours)
-GRADE_RANGE = {
-    'tier1': ['Perfect'],
-    'tier2': ['Really great'],
-    'tier3': ['Average', 'Good'],
-    'tier4': ['Terrible', 'Below Average'],
-}
 # Global variable
 '''
 feedback = {
@@ -51,7 +41,7 @@ def parse_csv() -> None:
     with open(INPUT_FILE_CSV, 'r') as csvfile:
         csv_reader = csv.reader(csvfile, delimiter=',')
         # GROUP FEEDBACK: First two rows
-        Group_feedback = Feedback(INPUT_FILE)
+        Group_feedback = Feedback()
         for row in csv_reader:
             if (Group_feedback.is_empty()):
                 Group_feedback.add_categories(row[1:])
@@ -63,10 +53,10 @@ def parse_csv() -> None:
         # INDIVIDUAL FEEDBACK: Continues looping from 3rd row onwards
         list_of_names = []
         list_of_feedback = []
-        Individual_feedback = Feedback(INPUT_FILE)
+        Individual_feedback = Feedback()
         for row in csv_reader:
             if (Individual_feedback.is_empty()):
-                Individual_feedback = Feedback(INPUT_FILE)
+                Individual_feedback = Feedback()
                 Individual_feedback.add_categories(row[1:])
             elif(row[0] != ''):
                 list_of_names.append(row[0])
@@ -99,14 +89,10 @@ Description: adds colour to the grade on markdown
 def colour_grade(grade):
     if (not ENABLE_COLOUR_GRADES):
         return grade
-    if (grade in GRADE_RANGE['tier1']):
-        return f"<span style='color:teal;'>{grade}</span>"
-    elif (grade in GRADE_RANGE['tier2']):
-        return f"<span style='color:yellowgreen;'>{grade}</span>"
-    elif (grade in GRADE_RANGE['tier3']):
-        return f"<span style='color:orange;'>{grade}</span>"
-    elif (grade in GRADE_RANGE['tier4']):
-        return f"<span style='color:red;'>{grade}</span>"
+    tiers = list(GRADE_COLOUR_RANGE.keys())
+    for tier in tiers:
+        if (grade in GRADE_COLOUR_RANGE[tier]['grades']):
+            return f"<span style='color:{GRADE_COLOUR_RANGE[tier]['colour']};'>{grade}</span>"
     return grade
 
 '''
@@ -123,7 +109,7 @@ def format_feedback_into_string(Feedback, group_feedback = False, show_header = 
         result += '| ---- | ---- | ---- |\n'
     for category in Feedback.get_categories():
         mark = colour_grade(Feedback.get_mark(category))
-        comments = "Nothing to comment on!" if Feedback.get_comments(category) == '' else Feedback.get_comments(category)
+        comments = f'{DEFAULT_COMMENT}' if Feedback.get_comments(category) == '' else Feedback.get_comments(category)
         if group_feedback:
             result += f"| {mark} | {category} | {comments} |\n"
         else:
