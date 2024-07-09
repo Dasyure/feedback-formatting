@@ -17,7 +17,7 @@ feedback = {
 feedback = { 'group': {}, 'individual': {} }
 
 '''
-Description: converts given xls file into csv file. Input is originally xls
+Description: converts given xlsx file into csv file. Input is originally xlsx
     since it looks better and retains formatting.
 '''
 def convert_xls_csv() -> None:
@@ -25,16 +25,7 @@ def convert_xls_csv() -> None:
     dataframe.to_csv(INPUT_FILE_CSV, index=None, header=True) 
 
 '''
-Description: parses CSV input into data structures (results and individual_results)
-    CSV is expected to be in this format:
-    Header1 | Header2 | Header3 | Header4
-    Mark | Description | Mark | Description | Mark | Description | Mark | Description  
-    #### | Header1 | Header2 | Header3
-    Name | Mark | Description | Mark | Description | Mark | Description
-    Name | Mark | Description | Mark | Description | Mark | Description
-    Name | Mark | Description | Mark | Description | Mark | Description
-    Name | Mark | Description | Mark | Description | Mark | Description
-    Name | Mark | Description | Mark | Description | Mark | Description
+Description: parses CSV input into data structures
 '''
 def parse_csv() -> None:
     global feedback
