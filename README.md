@@ -2,13 +2,13 @@
 While I like to use the feedback merge request, I also like to give feedback on MS Teams. This script converts the marking spreadsheet feedback into a nice format that can be given to groups on MS Teams.
 
 ### Why use this script?
-- In your MyExperience feedback, students wished for more feedback
-- Pretty output given to students that summarises everything
-- Appends a message to the start and end of the feedback
 - **Takes less than a minute to do!**
+- In your MyExperience feedback, students wished for more feedback
+- Appends a message to the start and end of the feedback
+- Pretty colourful output that summarises everything
 
 ### Video Demo
-Note: real student names and groups are hidden for privacy reasons.
+**Click below to watch!** Real student names and groups are hidden for privacy reasons. 
 [![Watch the video](assets/feedback_formatting_thumbnail.png)](https://youtu.be/id39xWO5gwk)
 
 ## Setup
@@ -65,11 +65,11 @@ ___
 
 After everything has been copied in:
 - Run the script `python3 src/feedback_formatter.py ITER_NUM`
-- Open `output/results.md`, hold `ctrl + shift + t` to preview the markdown file.
+- Open `output/results.md`, hold `cmd + shift + v` to preview the markdown file.
 - Copy paste the text from the markdown file to give to your classes.
 
 ## Customising the output
 - The contents of the `start message` and the `end message` can be changed in the markdown files in `/input`
 - Settings can be configured in `config.yaml`.
-  - If no comment is left for a mark, the default comment is; `Nothing to comment on!`.
+  - If no comment is left for a mark, the default comment is: `Nothing to comment on!`.
   - Each grade is coloured either green, light green, yellow or red
