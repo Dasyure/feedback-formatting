@@ -18,7 +18,14 @@ While I like to use the feedback merge request, I also like to give feedback on 
 - `pip install -r requirements.txt`
 
 ## Instructions
-Watch the demo video above! Otherwise open `input/input.xls` and get the following:
+### Quick instructions
+- Copy input into `input/input.xlsx` just like in the video above!
+- Run the script `python3 src/feedback_formatter.py ITER_NUM`
+- Open `output/results.md`, hold `cmd + shift + v` to preview the markdown file.
+- Copy paste the text from the markdown file to give to your classes.
+
+### Detailed instructions
+Open `input/input.xlsx` and get the following:
 <details>
   <summary>1. Group categories</summary>
 
