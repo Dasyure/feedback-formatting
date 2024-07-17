@@ -80,3 +80,4 @@ After everything has been copied in:
 - Settings can be configured in `config.yaml`.
   - If no comment is left for a mark, the default comment is: `Nothing to comment on!`.
   - Each grade is coloured either green, light green, yellow or red
+  - Current grades are: Perfect, Really great, Average, Good, Terrible, Below Average. If this changes, modify `config.yaml`.
