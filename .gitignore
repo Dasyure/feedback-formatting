@@ -1,0 +1,9 @@
+# Ignore open files
+input/~$input.xlsx
+
+env/
+
+old-formatters/
+
+src/__pycache__/
+.DS_Store
