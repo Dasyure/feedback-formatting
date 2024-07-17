@@ -2,12 +2,12 @@ from get_config import INPUT_FILE
 
 class Feedback:
     '''
-        feedback = {
-            category1: {
-                mark: Perfect,
-                comments: Not bad!
-            },
-        }
+    {
+        category1: {
+            mark: Perfect,
+            comments: Not bad!
+        },
+    }
     '''
     def __init__(self) -> None:
         self.feedback = {}
@@ -64,3 +64,26 @@ class Feedback:
                 print(f"  {category}:\n"
                     f"    • Mark: {self.feedback[category]['mark']}\n"
                     f"    • Comments: {self.feedback[category]['comments']}")
+
+'''
+Data = {
+    group: Feedback,
+    individual: {
+        name1: Feedback,
+    }
+}
+'''
+class Store_Feedback:
+    def __init__(self) -> None:
+        self.group = None
+        self.individual = {}
+    def add_group_feedback(self, Feedback) -> None:
+        self.group = Feedback
+    def add_individual_feedback(self, individual_name, Feedback) -> None:
+        self.individual[individual_name] = Feedback
+    def get_group_feedback(self) -> Feedback:
+        return self.group
+    def get_individual_feedback(self, individual_name) -> Feedback:
+        return self.individual[individual_name]
+    def get_individual_list(self) -> list:
+        return list(self.individual.keys())

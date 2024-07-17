@@ -1,20 +1,18 @@
+'''
+File structure:
+-> convert_xls_csv
+-> parse_csv
+-> get_start_end_messages
+-> export_results
+  -> format_feedback_into_string
+    -> colour_grade
+'''
 import pandas as pd
 import csv
 import copy
 import sys
-from classes import Feedback
+from classes import Feedback, Store_Feedback
 from get_config import INPUT_FILE, INPUT_FILE_CSV, OUTPUT_FILE, DEFAULT_COMMENT, ENABLE_COLOUR_GRADES, GRADE_COLOUR_RANGE
-
-# Global variable
-'''
-feedback = {
-    group: Feedback,
-    individual: {
-        name1: Feedback,
-    }
-}
-'''
-feedback = { 'group': {}, 'individual': {} }
 
 '''
 Description: converts given xlsx file into csv file. Input is originally xlsx
@@ -27,8 +25,8 @@ def convert_xls_csv() -> None:
 '''
 Description: parses CSV input into data structures
 '''
-def parse_csv() -> None:
-    global feedback
+def parse_csv(Datastore) -> None:
+    # global feedback
     with open(INPUT_FILE_CSV, 'r') as csvfile:
         csv_reader = csv.reader(csvfile, delimiter=',')
         # GROUP FEEDBACK: First two rows
@@ -39,7 +37,7 @@ def parse_csv() -> None:
             else:
                 Group_feedback.add_marks_comments(row[1:])
                 break
-        feedback['group'] = Group_feedback
+        Datastore.add_group_feedback(Group_feedback)
 
         # INDIVIDUAL FEEDBACK: Continues looping from 3rd row onwards
         list_of_names = []
@@ -54,7 +52,7 @@ def parse_csv() -> None:
                 Individual_feedback.add_marks_comments(row[1:], is_group = False)
                 list_of_feedback.append(copy.deepcopy(Individual_feedback))
         for i, name in enumerate(list_of_names):
-            feedback['individual'][name] = list_of_feedback[i]
+            Datastore.add_individual_feedback(name, list_of_feedback[i])
 
 '''
 Description: grabs the start_msg to add to the beginning of the output, then
@@ -110,21 +108,22 @@ def format_feedback_into_string(Feedback, group_feedback = False, show_header = 
 '''
 Description: formats the final output
 '''
-def export_results(start_message, end_message, iteration_num):
-    global feedback
+def export_results(Datastore, start_message, end_message, iteration_num):
+    # global feedback
     with open(OUTPUT_FILE, 'w') as textfile:
         # Start message
         textfile.write(f"{start_message}")
         # Group feedback
-        group_result = format_feedback_into_string(feedback['group'], group_feedback=True, show_header=True)
+        group_result = format_feedback_into_string(Datastore.get_group_feedback(), group_feedback=True, show_header=True)
         textfile.write(group_result)
         # Individual feedback
         if iteration_num != 0:
             textfile.write('\n\\\n**Additional individual comments**\n')
         individual_result = ''
-        for name in feedback['individual']:
+        # for name in feedback['individual']:
+        for name in Datastore.get_individual_list():
             individual_result += f"- {name}:\n"
-            individual_result += format_feedback_into_string(feedback['individual'][name])
+            individual_result += format_feedback_into_string(Datastore.get_individual_feedback(name))
         textfile.write(individual_result[:-2])
         # End message
         textfile.write(f"\n___\n {end_message}")
@@ -141,8 +140,9 @@ if __name__ == "__main__":
         print(f'\n    Error: ITERATION_NUM must be 0, 1, 2 or 3.\n{correct_usage}')
     else:
         iteration_num = int(sys.argv[1])
+        Datastore = Store_Feedback()
         convert_xls_csv()
-        parse_csv()
+        parse_csv(Datastore)
         [start_message, end_message] = get_start_end_messages(iteration_num)
-        export_results(start_message, end_message, iteration_num)
+        export_results(Datastore, start_message, end_message, iteration_num)
         print(f"\n    Run the command 'open {OUTPUT_FILE}' to view the output!")
