@@ -145,4 +145,4 @@ if __name__ == "__main__":
         parse_csv()
         [start_message, end_message] = get_start_end_messages(iteration_num)
         export_results(start_message, end_message, iteration_num)
-        print(f"\n    Open '{OUTPUT_FILE}' to view the output!")
+        print(f"\n    Run the command 'open {OUTPUT_FILE}' to view the output!")
