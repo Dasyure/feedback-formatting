@@ -19,9 +19,9 @@ While I like to use the feedback merge request, I also like to give feedback on 
 
 ## Instructions
 ### Quick instructions
-- Run the command `open input/input.xlsx` and copy input into it, just like in the video above!
+- Open the input file by running `open input/input.xlsx` and copy input into it, just like in the video above!
 - Run the script `python3 src/feedback_formatter.py ITER_NUM`
-- Open `output/results.md`, hold `cmd + shift + v` to preview the markdown file.
+- Open the output file by running `open output/results.md`, hold `cmd + shift + v` to preview the markdown file.
 - Copy paste the text from the markdown file to give to your classes.
 
 ### Detailed instructions
