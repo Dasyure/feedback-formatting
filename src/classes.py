@@ -87,3 +87,11 @@ class Store_Feedback:
         return self.individual[individual_name]
     def get_individual_list(self) -> list:
         return list(self.individual.keys())
+    def print(self) -> None:
+        print('GROUP FEEDBACK:')
+        self.group.print()
+        print('----------------------------')
+        print('INDIVIDUAL FEEDBACK: ')
+        for individual in self.get_individual_list():
+            print(f'{individual}')
+            self.get_individual_feedback(individual).print()

@@ -6,6 +6,7 @@ File structure:
 -> export_results
   -> format_feedback_into_string
     -> colour_grade
+-> print_results_for_fun
 '''
 import pandas as pd
 import csv
@@ -128,6 +129,12 @@ def export_results(Datastore, start_message, end_message, iteration_num):
         # End message
         textfile.write(f"\n___\n {end_message}")
 
+'''
+Description: not needed for functionality, just for fun and debugging
+'''
+def print_results_for_fun(Datastore) -> None:
+    Datastore.print()
+
 if __name__ == "__main__":
     iterations = [0, 1, 2, 3]
     correct_usage = ("    Correct usage: 'python3 src/feedback_formatter.py ITERATION_NUM'\n"
@@ -141,8 +148,10 @@ if __name__ == "__main__":
     else:
         iteration_num = int(sys.argv[1])
         Datastore = Store_Feedback()
+
         convert_xls_csv()
         parse_csv(Datastore)
         [start_message, end_message] = get_start_end_messages(iteration_num)
         export_results(Datastore, start_message, end_message, iteration_num)
+        # print_results_for_fun(Datastore)
         print(f"\n    Run the command 'open {OUTPUT_FILE}' to view the output!")
