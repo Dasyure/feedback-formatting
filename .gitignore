@@ -1,9 +1,17 @@
-# Ignore open files
+# Open files
 input/~$input.xlsx
 
+# Files that get changes
+input/csv/input.csv
+input/input.xlsx
+output/results.md
+
+# Virtual env
 env/
 
+# Older versions of formatters
 old-formatters/
 
+# Python stuff
 src/__pycache__/
 .DS_Store
