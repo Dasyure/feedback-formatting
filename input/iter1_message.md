@@ -7,7 +7,7 @@ START_MESSAGE (don't delete this line) \
 END_MESSAGE (don't delete this line) \ 
 **Additional notes:**
 - Please read any comments left in the feedback merge request. It should be called “Project Feedback: Iteration 1”. If you click on the “changes” tab and scroll through the unresolved threads, you can view my comments. If I notice a line of code with bad style, I only comment on the first instance of it, so make sure you apply the feedback everywhere.
-- Automarks: check the course page. Have a look at which tests you failed (if any) as well!
+- Automarks: check the course page. Have a look at which tests you failed (if any) as well! At the time of sending this message, marks may not be out yet though. 
 - Final marks: the course will release these too. If you find your marks differ slightly from your team mates, it’s completely normal! It’s due to the way peer review data is collected by the course.
 - If your marks are significantly below your team mates, I will message you individually on MS teams with reasons why.
 

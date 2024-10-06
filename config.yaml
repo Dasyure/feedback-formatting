@@ -17,6 +17,7 @@ GRADE_COLOUR_RANGE:
     "colour": "yellowgreen"
     "grades":
       - "Really great"
+      - "Really Great"
   "tier3":
     "colour": "orange"
     "grades":
