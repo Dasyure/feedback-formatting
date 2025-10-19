@@ -8,8 +8,10 @@ While I like to use the feedback merge request, I also like to give feedback on 
 - Pretty colourful output that summarises everything
 
 ### Video Demo
-**Click below to watch!** Real student names and groups are hidden for privacy reasons. 
+**Click below to watch!**
+🚨 Real student names and groups are hidden for privacy reasons. 🚨
 [![Watch the video](assets/feedback_formatting_thumbnail.png)](https://youtu.be/id39xWO5gwk)
+🚨 Real student names and groups are hidden for privacy reasons. 🚨
 
 ## Setup
 - Optional: setup a virtual environment first:
