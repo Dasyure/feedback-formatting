@@ -60,7 +60,7 @@ Description: grabs the start_msg to add to the beginning of the output, then
     grab the end_msg to add to the end of the output. 
 '''
 def get_start_end_messages(iteration_num) -> list:
-    input_file_append_msg = f"input/iter{iteration_num}_message.md"
+    input_file_append_msg = f"templates/iter{iteration_num}_message.md"
     with open(input_file_append_msg, 'r') as textfile:
         start_message = ''
         end_message = ''
