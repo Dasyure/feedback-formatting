@@ -71,11 +71,12 @@ def get_start_end_messages(iteration_num) -> list:
     Description: grabs the start_msg to add to the beginning of the output, then
         grab the end_msg to add to the end of the output.
     """
-    input_file_append_msg = f"input/iter{iteration_num}_message.md"
+    input_file_append_msg = f"templates/iter{iteration_num}_message.md"
     with open(input_file_append_msg, "r") as textfile:
         start_message = ""
         end_message = ""
         flag = "START"
+
         for line in textfile:
             if ("START_MESSAGE" in line) or ("END_MESSAGE" in line):
                 flag = "START" if "START_MESSAGE" in line else "END"
