@@ -14,15 +14,14 @@ While I like to use the feedback merge request, I also like to give feedback on 
 🚨 Real student names and groups are hidden for privacy reasons. 🚨
 
 ## Setup
-- Optional: setup a virtual environment first:
-  - `python3 -m venv env`
-  - `source env/bin/activate`
-- `pip install -r requirements.txt`
+
+Ensure you have [`uv`](https://docs.astral.sh/uv/) installed so that the project
+can be executed easily.
 
 ## Instructions
 ### Quick instructions
 - Open the input file by running `open input/input.xlsx` and copy input into it, just like in the video above!
-- Run the script `python3 src/feedback_formatter.py ITER_NUM`
+- Run the script `uv run src/feedback_formatter.py ITER_NUM`
 - Open the output file by running `open output/results.md`, hold `cmd + shift + v` to preview the markdown file.
 - Copy paste the text from the markdown file to give to your classes.
 
@@ -73,7 +72,7 @@ Optionally: you can group together individual categories as group categories
 ___
 
 After everything has been copied in:
-- Run the script `python3 src/feedback_formatter.py ITER_NUM`
+- Run the script `uv run src/feedback_formatter.py ITER_NUM`
 - Open `output/results.md`, hold `cmd + shift + v` to preview the markdown file.
 - Copy paste the text from the markdown file to give to your classes.
 
